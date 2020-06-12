@@ -1,6 +1,6 @@
-# bmicalculator
+# BMI Calculator
 
-A new Flutter application.
+A new Flutter application from tutorial of Marcin Szałek on [Fidev](https://fidev.io/design-challenges/).
 
 ## Getting Started
 
