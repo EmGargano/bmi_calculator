@@ -27,7 +27,7 @@ class WeightCardState extends State<WeightCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.only(top: screenAwareSize(32.0, context)),
+        padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[

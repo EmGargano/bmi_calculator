@@ -1,3 +1,4 @@
+import 'package:bmicalculator/height_card.dart';
 import 'package:bmicalculator/weight_card.dart';
 import 'package:flutter/material.dart';
 import 'package:bmicalculator/gender_card.dart';
@@ -63,9 +64,7 @@ class InputPage extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: _tempCard("Height"),
-          )
+          Expanded(child: HeightCard()),
         ],
       ),
     );
