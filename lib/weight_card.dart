@@ -89,6 +89,7 @@ class WeightBackgound extends StatelessWidget {
         ),
         SvgPicture.asset(
           "images/weight_arrow.svg",
+          color: Theme.of(context).primaryColor,
           height: screenAwareSize(12.0, context),
           width: screenAwareSize(18.0, context),
         )
@@ -139,11 +140,11 @@ class WeightSlider extends StatelessWidget {
               ? new Container() // Empty first and last item
               : GestureDetector(
             behavior: HitTestBehavior.translucent,
-                onTap: () => _animateTo(value, durationMillis: 200),
+                onTap: () => _animateTo(value, durationMillis: 250),
                 child: FittedBox(
                     child: Text(
                       value.toString(),
-                      style: _getTextStyle(value),
+                      style: _getTextStyle(value, context: context),
                     ),
                     fit: BoxFit.scaleDown,
                   ),
@@ -199,16 +200,16 @@ class WeightSlider extends StatelessWidget {
     );
   }
 
-  TextStyle _getHighlightTextStyle() {
+  TextStyle _getHighlightTextStyle(BuildContext context) {
     return TextStyle(
-      color: Color.fromRGBO(77, 123, 243, 1.0),
+      color: Theme.of(context).primaryColor,
       fontSize: 28.0,
     );
   }
 
-  TextStyle _getTextStyle(int itemValue) {
+  TextStyle _getTextStyle(int itemValue, {BuildContext context}) {
     return itemValue == value
-        ? _getHighlightTextStyle()
+        ? _getHighlightTextStyle(context)
         : _getDefaultTextStyle();
   }
 }

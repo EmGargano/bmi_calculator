@@ -1,9 +1,10 @@
 import 'package:bmicalculator/widget_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:bmicalculator/gender.dart';
+import 'package:bmicalculator/model/gender.dart';
+import 'gender_styles.dart';
 import 'package:bmicalculator/card_title.dart';
-import 'dart:math' as math;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'gender_icon.dart';
 
 class GenderCard extends StatefulWidget {
   final Gender initialGender;
@@ -14,7 +15,7 @@ class GenderCard extends StatefulWidget {
   _GenderCardState createState() => _GenderCardState();
 }
 
-double _circleSize(BuildContext context) => screenAwareSize(130.0, context);
+
 
 class _GenderCardState extends State<GenderCard>
     with SingleTickerProviderStateMixin {
@@ -26,9 +27,9 @@ class _GenderCardState extends State<GenderCard>
     selectedGender = widget.initialGender ?? Gender.other;
     _arrowAnimationController = new AnimationController(
         vsync: this,
-        lowerBound: -_defaultGenderAngle,
-        upperBound: _defaultGenderAngle,
-        value: _genderAngles[selectedGender]);
+        lowerBound: -defaultGenderAngle,
+        upperBound: defaultGenderAngle,
+        value: genderAngles[selectedGender]);
     super.initState();
   }
 
@@ -95,7 +96,7 @@ class _GenderCardState extends State<GenderCard>
   void _setSelectedGender(Gender gender) {
     setState(() => selectedGender = gender);
     _arrowAnimationController.animateTo(
-      _genderAngles[gender],
+      genderAngles[gender],
       duration: Duration(milliseconds: 250),
       curve: Curves.linearToEaseOut,
     );
@@ -107,103 +108,13 @@ class GenderCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: _circleSize(context),
-      height: _circleSize(context),
+      width: circleSize(context),
+      height: circleSize(context),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Color.fromRGBO(244, 244, 244, 1.0),
       ),
     );
-  }
-}
-
-class GenderLine extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: screenAwareSize(8.0, context),
-        top: screenAwareSize(10.0, context),
-      ),
-      child: Container(
-        height: screenAwareSize(10.0, context),
-        width: 1.0,
-        color: Color.fromRGBO(110, 110, 110, 0.1),
-      ),
-    );
-  }
-}
-
-const double _defaultGenderAngle = math.pi / 4;
-
-const Map<Gender, double> _genderAngles = {
-  Gender.female: -_defaultGenderAngle,
-  Gender.other: 0.0,
-  Gender.male: _defaultGenderAngle,
-};
-
-class GenderIconTranslated extends StatelessWidget {
-  final Gender gender;
-
-  static final Map<Gender, String> _genderImages = {
-    Gender.female: "images/gender_female.svg",
-    Gender.other: "images/gender_other.svg",
-    Gender.male: "images/gender_male.svg",
-  };
-
-  const GenderIconTranslated({Key key, this.gender}) : super(key: key);
-
-  bool _isOtherGender() => gender == Gender.other;
-
-  String _assetName() => _genderImages[gender];
-
-  double _iconSize(BuildContext context) {
-    return screenAwareSize(_isOtherGender() ? 32.0 : 26.0, context);
-  }
-
-  double _genderLeftPadding(BuildContext context) {
-    return screenAwareSize(_isOtherGender() ? 4.0 : 0.0, context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget icon = Padding(
-      padding: EdgeInsets.only(left: _genderLeftPadding(context)),
-      child: SvgPicture.asset(
-        _assetName(),
-        width: _iconSize(context),
-        height: _iconSize(context),
-      ),
-    );
-
-    Widget rotatedIcon = Transform.rotate(
-      angle: -_genderAngles[gender],
-      child: icon,
-    );
-
-    Widget iconWithALine = Padding(
-      padding: EdgeInsets.only(bottom: _circleSize(context) / 2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          rotatedIcon,
-          GenderLine(),
-        ],
-      ),
-    );
-
-    Widget rotatedIconWithALine = Transform.rotate(
-      alignment: Alignment.bottomCenter,
-      angle: _genderAngles[gender],
-      child: iconWithALine,
-    );
-
-    Widget centeredIconWithALine = Padding(
-      padding: EdgeInsets.only(bottom: _circleSize(context) / 2),
-      child: rotatedIconWithALine,
-    );
-
-    return centeredIconWithALine;
   }
 }
 
@@ -224,9 +135,10 @@ class GenderArrow extends AnimatedWidget {
       child: Transform.translate(
         offset: Offset(0.0, _translationOffset(context)),
         child: Transform.rotate(
-          angle: -_defaultGenderAngle,
+          angle: -defaultGenderAngle,
           child: SvgPicture.asset(
             "images/gender_arrow.svg",
+            color: Theme.of(context).primaryColor,
             width: _arrowLength(context),
             height: _arrowLength(context),
           ),

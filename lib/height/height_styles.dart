@@ -5,12 +5,15 @@ double marginBottomAdapted(BuildContext context) => screenAwareSize(marginBottom
 
 double marginTopAdapted(BuildContext context) => screenAwareSize(marginBottom, context);
 
+double circleSizeAdapted(BuildContext context) => screenAwareSize(circleSize, context);
+
 const TextStyle labelsTextStyle = TextStyle(
   fontSize: labelsFontSize,
   color: labelsGrey,
 );
 
-const marginBottom = 16.0;
+const marginBottom = circleSize / 2;
 const marginTop = 26.0;
+const circleSize = 45.0;
 const labelsFontSize = 13.0;
 const labelsGrey = const Color.fromRGBO(216, 217, 223, 1.0);

@@ -1,60 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:bmicalculator/card_title.dart';
-import 'dart:math' as math;
-import 'package:bmicalculator/height_styles.dart';
+import 'height_styles.dart';
+import 'height_slider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
-
-class HeightCard extends StatefulWidget {
-  final int initialHeight;
-
-  HeightCard({Key key, this.initialHeight}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => HeightCardState();
-}
-
-class HeightCardState extends State<HeightCard> {
-  int height;
-
-  @override
-  void initState() {
-    height = widget.initialHeight ?? 170;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CardTitle(
-              "HEIGHT",
-              subtitle: "(cm)",
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return HeightPicker(
-                      widgetHeight: constraints.maxHeight,
-                      height: height,
-                      onChange: (val) => setState(() => height = val),
-                    );
-                  },
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class HeightPicker extends StatefulWidget {
   final int maxHeight;
@@ -79,12 +28,51 @@ class HeightPicker extends StatefulWidget {
 }
 
 class HeightPickerState extends State<HeightPicker> {
+  double get _drawingHeight {
+    double totalHeight = widget.widgetHeight;
+    double marginBottom = marginBottomAdapted(context);
+    double marginTop = marginTopAdapted(context);
+    return totalHeight - (marginBottom + marginTop + labelsFontSize);
+  }
+
+  double get _pixelsPerUnit {
+    return _drawingHeight / widget.totalUnits;
+  }
+
+  double get _sliderPosition {
+    double halfLabelSize = labelsFontSize / 2;
+    int unitsToSlider = widget.height - widget.minHeight;
+    return unitsToSlider * _pixelsPerUnit + halfLabelSize;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
+        _drawPersonImage(),
+        _drawSlider(),
         _drawLabels(),
       ],
+    );
+  }
+
+  Widget _drawPersonImage() {
+    double personImageHeight = _sliderPosition + marginBottomAdapted(context);
+    return Align(
+        alignment: Alignment.bottomCenter,
+        child: SvgPicture.asset(
+          "images/person.svg",
+          height: personImageHeight,
+          width: personImageHeight / 3,
+        ));
+  }
+
+  Widget _drawSlider() {
+    return Positioned(
+      child: HeightSlider(height: widget.height),
+      bottom: _sliderPosition,
+      left: 0.0,
+      right: 0.0,
     );
   }
 

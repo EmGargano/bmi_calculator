@@ -1,7 +1,7 @@
-import 'package:bmicalculator/height_card.dart';
+import 'file:///C:/Users/lele1/AndroidStudioProjects/bmi_calculator/lib/height/height_card.dart';
 import 'package:bmicalculator/weight_card.dart';
 import 'package:flutter/material.dart';
-import 'package:bmicalculator/gender_card.dart';
+import 'file:///C:/Users/lele1/AndroidStudioProjects/bmi_calculator/lib/gender/gender_card.dart';
 
 import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
 
