@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:bmicalculator/height/height_card.dart';
 import 'package:bmicalculator/weight/weight_card.dart';
 import 'package:bmicalculator/gender/gender_card.dart';
+import 'package:bmicalculator/input_page_styles.dart';
+import 'package:bmicalculator/app_bar.dart';
 
 import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
 
@@ -9,11 +11,14 @@ class InputPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        child: BmiAppBar(),
+        preferredSize: Size.fromHeight(appBarHeight(context)),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _buildTitle(context),
             Expanded(child: _buildCards(context)),
             _buildBottom(context),
           ],
@@ -69,5 +74,4 @@ class InputPage extends StatelessWidget {
       ),
     );
   }
-  
 }

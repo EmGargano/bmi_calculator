@@ -19,8 +19,8 @@ class WeightCardState extends State<WeightCard> {
 
   @override
   void initState() {
-    weight = widget.initialWeight ?? 70;
     super.initState();
+    weight = widget.initialWeight ?? 70;
   }
 
   @override
