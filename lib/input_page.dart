@@ -69,14 +69,5 @@ class InputPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _tempCard(String label) {
-    return Card(
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Text(label),
-      ),
-    );
-  }
+  
 }
