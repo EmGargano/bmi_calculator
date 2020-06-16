@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bmicalculator/card_title.dart';
-import 'height_picker.dart';
+import 'package:bmicalculator/height/height_picker.dart';
 
 import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
 

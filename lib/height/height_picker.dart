@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'height_styles.dart';
-import 'height_slider.dart';
+import 'package:bmicalculator/height/height_styles.dart';
+import 'package:bmicalculator/height/height_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:math' as math;
-import 'dart:io';
 
 import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
 
@@ -116,7 +115,6 @@ class HeightPickerState extends State<HeightPicker> {
   _onTapDown(TapDownDetails tapDownDetails) {
     int height = _globalOffsetToHeight(tapDownDetails.globalPosition);
     widget.onChange(_normalizeHeight(height));
-    stderr.writeln('$height');
   }
 
   int _normalizeHeight(int height) {

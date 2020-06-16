@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'gender_styles.dart';
+import 'package:bmicalculator/gender/gender_styles.dart';
 import 'package:bmicalculator/model/gender.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -7,6 +7,7 @@ import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
 
 class GenderIconTranslated extends StatelessWidget {
   final Gender gender;
+  final Gender selectedGender;
 
   static final Map<Gender, String> _genderImages = {
     Gender.female: "images/gender_female.svg",
@@ -14,11 +15,23 @@ class GenderIconTranslated extends StatelessWidget {
     Gender.male: "images/gender_male.svg",
   };
 
-  const GenderIconTranslated({Key key, this.gender}) : super(key: key);
+  static final Map<Gender, Color> _genderColors = {
+    Gender.female: Color.fromRGBO(249, 64, 148, 1.0),
+    Gender.other: Color.fromRGBO(132, 92, 238, 1.0),
+    Gender.male: Color.fromRGBO(0, 137, 255, 1.0),
+  };
+
+  const GenderIconTranslated({
+    Key key,
+    this.gender,
+    this.selectedGender})
+      : super(key: key);
 
   bool _isOtherGender() => gender == Gender.other;
 
   String _assetName() => _genderImages[gender];
+
+  Color _genderColor() => _genderColors[gender];
 
   double _iconSize(BuildContext context) {
     return screenAwareSize(_isOtherGender() ? 32.0 : 26.0, context);
@@ -36,6 +49,9 @@ class GenderIconTranslated extends StatelessWidget {
         _assetName(),
         width: _iconSize(context),
         height: _iconSize(context),
+        color: gender == selectedGender
+        ? _genderColor()
+        : Color.fromRGBO(150, 150, 150, 1.0),
       ),
     );
 

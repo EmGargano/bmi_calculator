@@ -1,102 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
-import 'package:bmicalculator/card_title.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:math' as math;
-
-class WeightCard extends StatefulWidget {
-  final int initialWeight;
-
-  WeightCard({Key key, this.initialWeight}) : super(key: key);
-
-  @override
-  WeightCardState createState() => WeightCardState();
-}
-
-class WeightCardState extends State<WeightCard> {
-  int weight;
-
-  @override
-  void initState() {
-    weight = widget.initialWeight ?? 70;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.only(top: screenAwareSize(16.0, context)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CardTitle(
-              "WEIGHT",
-              subtitle: "(KG)",
-            ),
-            Expanded(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: _drawSlider(),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _drawSlider() {
-    return WeightBackgound(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return constraints.isTight
-              ? Container()
-              : WeightSlider(
-                  minValue: 30,
-                  maxValue: 120,
-                  value: weight,
-                  onChanged: (val) => setState(() => weight = val),
-                  width: constraints.maxWidth,
-                );
-        },
-      ),
-    );
-  }
-}
-
-class WeightBackgound extends StatelessWidget {
-  final Widget child;
-
-  const WeightBackgound({Key key, this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        Container(
-          height: screenAwareSize(100.0, context),
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(244, 244, 244, 1.0),
-            borderRadius:
-                new BorderRadius.circular(screenAwareSize(50.0, context)),
-          ),
-          child: child,
-        ),
-        SvgPicture.asset(
-          "images/weight_arrow.svg",
-          color: Theme.of(context).primaryColor,
-          height: screenAwareSize(12.0, context),
-          width: screenAwareSize(18.0, context),
-        )
-      ],
-    );
-  }
-}
+import 'package:flutter/rendering.dart';
 
 class WeightSlider extends StatelessWidget {
   WeightSlider({
@@ -107,7 +11,7 @@ class WeightSlider extends StatelessWidget {
     this.onChanged,
     this.value,
   })  : scrollController = new ScrollController(
-            initialScrollOffset: (value - minValue) * width / 3),
+      initialScrollOffset: (value - minValue) * width / 3),
         super(key: key);
 
   final int minValue;
@@ -140,15 +44,15 @@ class WeightSlider extends StatelessWidget {
               ? new Container() // Empty first and last item
               : GestureDetector(
             behavior: HitTestBehavior.translucent,
-                onTap: () => _animateTo(value, durationMillis: 250),
-                child: FittedBox(
-                    child: Text(
-                      value.toString(),
-                      style: _getTextStyle(value, context: context),
-                    ),
-                    fit: BoxFit.scaleDown,
-                  ),
-              );
+            onTap: () => _animateTo(value, durationMillis: 250),
+            child: FittedBox(
+              child: Text(
+                value.toString(),
+                style: _getTextStyle(value, context: context),
+              ),
+              fit: BoxFit.scaleDown,
+            ),
+          );
         },
       ),
     );

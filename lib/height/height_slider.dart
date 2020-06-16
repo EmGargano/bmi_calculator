@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'height_styles.dart';
+import 'package:bmicalculator/height/height_styles.dart';
 
 class HeightSlider extends StatelessWidget {
   int height;

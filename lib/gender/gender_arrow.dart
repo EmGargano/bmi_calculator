@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'gender_styles.dart';
+import 'package:bmicalculator/gender/gender_styles.dart';
 
 import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
 

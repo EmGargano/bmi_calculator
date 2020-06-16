@@ -1,10 +1,11 @@
 import 'package:bmicalculator/widget_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:bmicalculator/model/gender.dart';
-import 'gender_styles.dart';
+import 'package:bmicalculator/gender/gender_styles.dart';
 import 'package:bmicalculator/card_title.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'gender_icon.dart';
+import 'package:bmicalculator/gender/gender_icon.dart';
+import 'package:bmicalculator/gender/gender_arrow.dart';
+import 'package:bmicalculator/gender/gender_circle.dart';
 
 class GenderCard extends StatefulWidget {
   final Gender initialGender;
@@ -64,9 +65,9 @@ class _GenderCardState extends State<GenderCard>
         alignment: Alignment.bottomCenter,
         children: <Widget>[
           _drawCircularIndicator(),
-          GenderIconTranslated(gender: Gender.female),
-          GenderIconTranslated(gender: Gender.other),
-          GenderIconTranslated(gender: Gender.male),
+          GenderIconTranslated(gender: Gender.female, selectedGender: selectedGender,),
+          GenderIconTranslated(gender: Gender.other, selectedGender: selectedGender,),
+          GenderIconTranslated(gender: Gender.male, selectedGender: selectedGender,),
           _drawGestureDetector(),
         ],
       ),
@@ -102,50 +103,6 @@ class _GenderCardState extends State<GenderCard>
     );
   }
 
-}
-
-class GenderCircle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: circleSize(context),
-      height: circleSize(context),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Color.fromRGBO(244, 244, 244, 1.0),
-      ),
-    );
-  }
-}
-
-class GenderArrow extends AnimatedWidget {
-
-  const GenderArrow({Key key, Listenable listenable}) : super(key: key, listenable: listenable);
-
-  double _arrowLength(BuildContext context) => screenAwareSize(45.0, context);
-
-  double _translationOffset(BuildContext context) =>
-      _arrowLength(context) * -0.45;
-
-  @override
-  Widget build(BuildContext context) {
-    Animation animation = listenable;
-    return Transform.rotate(
-      angle: animation.value,
-      child: Transform.translate(
-        offset: Offset(0.0, _translationOffset(context)),
-        child: Transform.rotate(
-          angle: -defaultGenderAngle,
-          child: SvgPicture.asset(
-            "images/gender_arrow.svg",
-            color: Theme.of(context).primaryColor,
-            width: _arrowLength(context),
-            height: _arrowLength(context),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class TopHandler extends StatelessWidget {
