@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'height_styles.dart';
 import 'height_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:math' as math;
+import 'dart:io';
 
 import 'package:bmicalculator/widget_utils.dart' show screenAwareSize;
 
@@ -28,6 +30,9 @@ class HeightPicker extends StatefulWidget {
 }
 
 class HeightPickerState extends State<HeightPicker> {
+  int startDragHeight;
+  double startDragYOffset;
+
   double get _drawingHeight {
     double totalHeight = widget.widgetHeight;
     double marginBottom = marginBottomAdapted(context);
@@ -47,12 +52,18 @@ class HeightPickerState extends State<HeightPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        _drawPersonImage(),
-        _drawSlider(),
-        _drawLabels(),
-      ],
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTapDown: _onTapDown,
+      onVerticalDragStart: _onDragStart,
+      onVerticalDragUpdate: _onDragUpdate,
+      child: Stack(
+        children: <Widget>[
+          _drawPersonImage(),
+          _drawSlider(),
+          _drawLabels(),
+        ],
+      ),
     );
   }
 
@@ -84,7 +95,6 @@ class HeightPickerState extends State<HeightPicker> {
         style: labelsTextStyle,
       );
     });
-
     return Align(
       alignment: Alignment.centerRight,
       child: IgnorePointer(
@@ -101,5 +111,41 @@ class HeightPickerState extends State<HeightPicker> {
         ),
       ),
     );
+  }
+
+  _onTapDown(TapDownDetails tapDownDetails) {
+    int height = _globalOffsetToHeight(tapDownDetails.globalPosition);
+    widget.onChange(_normalizeHeight(height));
+    stderr.writeln('$height');
+  }
+
+  int _normalizeHeight(int height) {
+    return math.max(widget.minHeight, math.min(widget.maxHeight, height));
+  }
+
+  int _globalOffsetToHeight(Offset globalOffset) {
+    RenderBox renderBox = context.findRenderObject();
+    Offset localOffset = renderBox.globalToLocal(globalOffset);
+    double dy = localOffset.dy;
+    dy = dy - marginTopAdapted(context) - labelsFontSize / 2;
+    int height = widget.maxHeight - (dy ~/ _pixelsPerUnit);
+    return height;
+  }
+
+  _onDragStart(DragStartDetails dragStartDetails) {
+    int newHeight = _globalOffsetToHeight(dragStartDetails.globalPosition);
+
+    setState(() {
+      startDragYOffset = dragStartDetails.globalPosition.dy;
+      startDragHeight = newHeight;
+    });
+  }
+
+  _onDragUpdate(DragUpdateDetails dragUpdateDetails) {
+    double currentYOffset = dragUpdateDetails.globalPosition.dy;
+    double verticalDifference = startDragYOffset - currentYOffset;
+    int heightDifference = verticalDifference  ~/ _pixelsPerUnit;
+    int newHeight = _normalizeHeight(startDragHeight + heightDifference);
+    setState(() => widget.onChange(newHeight));
   }
 }
